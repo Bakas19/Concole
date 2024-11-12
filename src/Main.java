@@ -3,25 +3,49 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+
 public class Main {
     public static void main(String [] args){
 
         System.out.println("Hello world");
+        int[] koord = new int[5];
 JTextField smallField = new JTextField("300, 250, 25, 45, 20");
 JTextField numbers = new JTextField("0, 1, 2, 3, 4, 5, 6, 7, 8, 9");
+JFrame f = new JFrame("Swing Paint Demo");
+MyPanel myPanel = new MyPanel();
 
 numbers.addActionListener(new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
         String[] parm = smallField.getText().replaceAll("", "").split("");
-        int [] koord  = new int[parm.length];
+
+
+
         if (parm.length != parm.length){
             JOptionPane.showConfirmDialog(null, "Error");
         }
+
+        for (int i = 0; i< parm.length; i++){
+            koord[i] = getInteger(parm[i]);
+        }
+
+        myPanel.setX(koord[0]);
+        myPanel.setY(koord[1]);
+        myPanel.setWidth(koord[2]);
+        myPanel.setHeight(koord[3]);
+        myPanel.setStep(4);
+        myPanel.setSymbols(numbers.getText());
+        myPanel.repaint();
+        f.add(myPanel);
+        f.pack();
+        f.setVisible(true);
+
+
     }
 });
 
-JFrame f = new JFrame("Swing Paint Demo");
+
 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -29,10 +53,24 @@ contents.add(numbers);
 contents.add(smallField);
 f.setContentPane(contents);
 
-MyPanel myPanel = new MyPanel();
+
 myPanel.repaint();
 myPanel.setSymbols("1,  2, 3");
 f.add(myPanel);
 f.pack();
 f.setVisible(true);
-}}
+}
+
+private static int getInteger(String parm){
+        try {
+            return Integer.parseInt(parm);
+
+        }
+        catch (Exception e){
+            new Exception("Это не цифра");
+        }
+        return 0;
+}
+
+
+}
